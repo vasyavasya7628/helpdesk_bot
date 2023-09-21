@@ -3,7 +3,7 @@ from aiogram.types import Message
 
 import res.resources as text
 from keyboards.register_keyboard import get_kb_register
-
+import db_operations.db_methods
 register_router = Router()
 
 

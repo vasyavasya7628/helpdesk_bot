@@ -9,6 +9,8 @@ from handlers import start, exceptions, districts, register
 
 # Запуск бота
 async def main():
+    # TODO Взять данные из базы здесь и загрузить их в список resources_get_districts()
+    # TODO это выполняется один раз призапуске бота
     logging.basicConfig(level=logging.INFO)
     bot = Bot(token=text.bot_token())
     dp = Dispatcher()
