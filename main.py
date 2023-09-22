@@ -4,19 +4,18 @@ import logging
 from aiogram import Bot, Dispatcher
 
 import res.resources as text
-from handlers import start, exceptions, districts, register
+from handlers import start, exceptions, districts, register, reg_success
 
 
 # Запуск бота
 async def main():
-    # TODO Взять данные из базы здесь и загрузить их в список resources_get_districts()
-    # TODO это выполняется один раз призапуске бота
     logging.basicConfig(level=logging.INFO)
     bot = Bot(token=text.bot_token())
     dp = Dispatcher()
     dp.include_routers(districts.districts_router,
                        start.start_router,
                        register.register_router,
+                       reg_success.reg_success_router,
                        exceptions.exceptions_router
                        )
 

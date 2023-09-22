@@ -91,7 +91,7 @@ districts = [
     "12452124"
 ]
 # Подключение к базе данных (если она существует) или создание новой
-conn = sqlite3.connect('districts.db')
+conn = sqlite3.connect('../db_metods/districts.db')
 cursor = conn.cursor()
 
 # Создание таблицы для районов (district)
