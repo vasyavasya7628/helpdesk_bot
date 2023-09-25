@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
@@ -11,6 +13,7 @@ admin_districts_router = Router()
 
 @admin_districts_router.message(F.text.lower() == res.text_admin_login().lower())
 async def cmd_select_district(message: Message, state: FSMContext):
+    logging.info("Устанавливаем состояние AdminFSM.choose_district")
     await state.set_state(AdminFSM.choose_district)
     await message.answer(
         res.text_admin_choose_district(),

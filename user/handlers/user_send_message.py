@@ -1,3 +1,5 @@
+import logging
+
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 
@@ -8,6 +10,7 @@ from user.user_states import UserFSM
 
 @user_district_router.message(UserFSM.send_message)
 async def cmd_send_message(message: Message, state: FSMContext):
+    logging.info("Устанавливаем состояние UserFSM.check_message")
     await state.set_state(UserFSM.check_message)
     await message.answer(
         res.describe_your_problem(),

@@ -1,5 +1,6 @@
 import asyncio
 import logging
+import sys
 
 from aiogram import Bot, Dispatcher
 
@@ -11,7 +12,6 @@ from user.handlers import user_district
 
 # Запуск бота
 async def main():
-    logging.basicConfig(level=logging.INFO)
     bot = Bot(token=text.bot_token())
     dp = Dispatcher()
     dp.include_routers(start.start_router,
@@ -25,4 +25,5 @@ async def main():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(main())

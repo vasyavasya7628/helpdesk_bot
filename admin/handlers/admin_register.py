@@ -11,6 +11,6 @@ from keyboards.register_keyboard import get_kb_register
 async def cmd_select_district_reg(message: Message, state: FSMContext):
     await state.set_state(AdminFSM.reg_success)
     await message.answer(
-        res.text_chose_district_from_list(),
+        res.text_admin_choose_district(),
         reply_markup=get_kb_register()
     )
