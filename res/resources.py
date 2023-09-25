@@ -34,8 +34,12 @@ def text_write_to_it() -> str:
     return "Написать в IT-Отдел."
 
 
-def text_chose_district_from_list() -> str:
-    return "Выберите ведомство из списка:"
+def text_admin_choose_district() -> str:
+    return "Выберите ведомство из списка(Для It специалистов):"
+
+
+def text_user_choose_district() -> str:
+    return "Выберите ведомство из списка(Для специалистов c окно):"
 
 
 def return_to_main_menu() -> str:
@@ -52,6 +56,14 @@ def text_register_complete() -> str:
 
 def text_greetings() -> str:
     return "Что нужно смертный:"
+
+
+def describe_your_problem() -> str:
+    return "Опишите вашу проблему"
+
+
+def text_message_correct() -> str:
+    return "Вы уверены, что описали проблему правильно?"
 
 
 def get_districts() -> list:
@@ -146,3 +158,7 @@ def get_districts() -> list:
         "44"
     ]
     return districts
+
+
+def order_send() -> str:
+    return "Заявка успешно создана! Специалисты свяжутся с вами в ближайшее время."

@@ -18,4 +18,3 @@ def add_buttons_from_districts(kb):
     for i in range(len(districts_copy) - 1):
         if i % 2 == 0:
             kb.button(text=districts_copy[i])
-
