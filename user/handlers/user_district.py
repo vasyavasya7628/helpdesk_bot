@@ -15,7 +15,7 @@ user_district_router = Router()
 async def cmd_select_district(message: Message, state: FSMContext):
     logging.info("Устанавливаем состояние UserFSM.send_message")
     await state.set_state(UserFSM.send_message)
-    reply_message = message.reply_to_message
+
     await message.answer(
         res.text_user_choose_district(),
         reply_markup=get_kb_districts()
