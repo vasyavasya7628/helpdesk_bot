@@ -14,6 +14,10 @@ def text_register_for_admins() -> str:
     return "Зарегистрироваться(Для администраторов)"
 
 
+def text_end_register_for_admins() -> str:
+    return "Регистрация завершена!"
+
+
 def choose_button() -> str:
     return "Выберите"
 
@@ -43,7 +47,7 @@ def text_user_choose_district() -> str:
 
 
 def return_to_main_menu() -> str:
-    return "Вернуться в главное меню:"
+    return "Вернуться в главное меню"
 
 
 def text_admin_login() -> str:
@@ -66,13 +70,17 @@ def text_message_correct() -> str:
     return "Вы уверены, что описали проблему правильно?"
 
 
+def lower_case() -> str:
+    return "_"
+
+
 def get_districts() -> list:
     districts = [
         "Контакт Центр",
         "1",
-        "Отдел 'Мои документы' Беловский район",
+        "Отдел Мои документы Беловский район",
         "2",
-        "Отдел 'Мои документы' Гурьевский район",
+        "Отдел Мои документы Гурьевский район",
         "3",
         "Отдел 'Мои документы' Ижморский район",
         "4",

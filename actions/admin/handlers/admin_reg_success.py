@@ -1,32 +1,31 @@
-from aiogram.fsm.context import FSMContext
+from aiogram import Router, F
 from aiogram.types import Message
 
-import res.resources as text
-from admin.admin_fsm.admin_states import AdminFSM
-from admin.handlers.admin_district import admin_districts_router
+from actions.admin.keyboards.adm_success_keyboard import get_kb_reg_success
 from db_metods.table_user_id import insert_user
-from keyboards.reg_success_keyboard import get_kb_reg_success
+from res.resources import text_end_register_for_admins, get_districts
+
+admin_reg_success_router = Router()
 
 
 def list_item_equal(message):
-    districts = text.get_districts()
+    districts = get_districts()
     for i in range(len(districts)):
         if message == districts[i].lower():
             return message
 
 
 def get_district_id(message_text):
-    districts = text.get_districts()
+    districts = get_districts()
     for i in range(len(districts)):
         if message_text.lower() == districts[i].lower():
             return districts[i + 1]
 
 
-@admin_districts_router.message(AdminFSM.reg_success)
-async def cmd_select_district_reg(message: Message, state: FSMContext):
+@admin_reg_success_router.message(F.text == "Регистрация завершена!")
+async def adm_select_district_reg(message: Message):
     insert_user(get_district_id(message.text), message.from_user.id)
-    await state.clear()
     await message.answer(
-        f"{message.text}",
+        text_end_register_for_admins(),
         reply_markup=get_kb_reg_success()
     )

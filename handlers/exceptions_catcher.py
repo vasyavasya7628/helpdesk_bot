@@ -1,3 +1,5 @@
+import logging
+
 from aiogram import Router, F
 from aiogram.types import Message
 
@@ -8,6 +10,7 @@ exceptions_router = Router()
 
 @exceptions_router.message(F.text)
 async def message_with_text(message: Message):
+    logging.info(f"Я не смог найти нужный handler для: {message.text}")
     await message.answer(resources.text_incorrect_text())
 
 
