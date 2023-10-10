@@ -6,14 +6,17 @@ from aiogram import Bot, Dispatcher
 
 from actions.admin.handlers.admin_district import admin_districts_router
 from actions.admin.handlers.admin_reg_success import admin_reg_success_router
-from actions.admin.handlers.admin_register import admin_register_router
-from actions.user.handlers.user_check_message import user_check_message_router
+from actions.admin.handlers.order_status import order_status_router_yes, order_status_router_no
 from actions.user.handlers.user_district import user_district_router
 from actions.user.handlers.user_send_message import user_send_message_router
-from actions.user.handlers.user_success_message import user_return_to_menu_router
+from actions.user.handlers.user_success_message import user_success_router
 from handlers.exceptions_catcher import exceptions_router
 from handlers.start import start_router
 from res.resources import bot_token
+
+
+def get_bot():
+    return
 
 
 # Запуск бота
@@ -23,16 +26,19 @@ async def main():
     dp.include_routers(start_router,
                        admin_districts_router,
                        admin_reg_success_router,
-                       admin_register_router,
+                       order_status_router_yes,
+                       order_status_router_no,
                        user_district_router,
                        user_send_message_router,
-                       user_check_message_router,
-                       user_return_to_menu_router,
+                       user_success_router,
                        exceptions_router
                        )
 
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot)
+
+    is_webhook_set = bot.get_webhook_info() is not None
+    logging.info(is_webhook_set)
 
 
 if __name__ == "__main__":
