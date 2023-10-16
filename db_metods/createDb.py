@@ -21,6 +21,22 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS users (
                     user_nickname TEXT,
                     FOREIGN KEY (district_id) REFERENCES district (id)
                  )''')
+
+cursor.execute('''CREATE TABLE IF NOT EXISTS orders (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    district_id INTEGER,
+                    order_number INTEGER,
+                    order_description TEXT,
+                    from_user TEXT,
+                    who_take_order TEXT,
+                    time TEXT,
+                    FOREIGN KEY (district_id) REFERENCES district (id)
+                )''')
+
+cursor.execute('''CREATE TABLE IF NOT EXISTS order_number (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    order_number INTEGER
+                )''')
 districts = get_districts()
 # Пример вставки данных из вашего списка districts
 for i in range(0, len(districts), 2):

@@ -62,3 +62,49 @@ def delete_admin_from_db(admin_id):
 
         # Delete all info the current admin's district
         cursor.execute("DELETE FROM users WHERE user_id = ?", (admin_id,))
+
+
+def add_order_info_to_db(district_id, order_number, order_description, from_user, data_time):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, "districts.db")
+
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''INSERT INTO orders (district_id, order_description, from_user, order_number, time)
+                          VALUES (?, ?, ?, ?, ?)''', (district_id,
+                                                      order_description,
+                                                      from_user,
+                                                      order_number,
+                                                      data_time))
+        conn.commit()
+
+
+def add_worker_db(who_take_order, order_number):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, "districts.db")
+
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        if order_number is not None:
+            cursor.execute('''UPDATE orders 
+                              SET order_number = ? 
+                              WHERE id = ?''', (who_take_order, order_number))
+        conn.commit()
+
+
+def store_order_number(order_number):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, "districts.db")
+
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        cursor.execute('''UPDATE order_number 
+                                  SET order_number = ? ''', order_number)
+    conn.commit()
+
+
+def check_none_string(text):
+    if text is None:
+        return ""
+    else:
+        return text
