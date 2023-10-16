@@ -54,6 +54,10 @@ def text_admin_login() -> str:
     return "Зарегистрироваться"
 
 
+def order_list() -> str:
+    return "Список заявок"
+
+
 def text_register_complete() -> str:
     return "Регистрация завершена!"
 

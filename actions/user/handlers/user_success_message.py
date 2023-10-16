@@ -29,7 +29,9 @@ async def user_success_message(message: Message, state: FSMContext):
     admin_id = find_user_id(data['choose_district'])
     for i in range(len(admin_id)):
         logging.info(f"user id = {admin_id[i]}")
-        await bot.send_message(admin_id[i], f"Заявка №{generate_random_number()}: \n" + message.text,
+        await bot.send_message(admin_id[i], f"Заявка №{generate_random_number()}: \n"
+                               + f"{message.text}"
+                               + f"\n От специалиста: https://t.me/{check_none_string(message.from_user.username)}",
                                reply_markup=kb_sender_buttons())
     await bot.session.close()
     await state.clear()

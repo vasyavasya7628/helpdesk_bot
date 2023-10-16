@@ -37,6 +37,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS order_number (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     order_number INTEGER
                 )''')
+
 districts = get_districts()
 # Пример вставки данных из вашего списка districts
 for i in range(0, len(districts), 2):
@@ -51,7 +52,7 @@ for i in range(0, len(districts), 2):
 
     # Вставляем данные в таблицу user_id
     # cursor.execute('INSERT INTO users (district_id, user_id) VALUES (?, ?)', (district_id, user_id))
-
+cursor.execute("INSERT INTO order_number (order_number) VALUES (1)")
 # Сохраняем изменения и закрываем соединение
 conn.commit()
 conn.close()

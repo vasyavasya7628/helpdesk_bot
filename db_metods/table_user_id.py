@@ -1,4 +1,6 @@
+import logging
 import os.path
+import re
 import sqlite3
 
 
@@ -85,11 +87,16 @@ def add_worker_db(who_take_order, order_number):
 
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
-        if order_number is not None:
-            cursor.execute('''UPDATE orders 
-                              SET order_number = ? 
-                              WHERE id = ?''', (who_take_order, order_number))
+        cursor.execute('''UPDATE orders
+        SET
+        who_take_order = ?
+        WHERE
+        order_number = ?''', (who_take_order, convert_string_to_int(str(order_number))))
         conn.commit()
+
+
+def convert_string_to_int(input_string):
+    return re.sub(r'\D', '', input_string)
 
 
 def store_order_number(order_number):
@@ -98,9 +105,23 @@ def store_order_number(order_number):
 
     with sqlite3.connect(db_path) as conn:
         cursor = conn.cursor()
-        cursor.execute('''UPDATE order_number 
-                                  SET order_number = ? ''', order_number)
+        cursor.execute("DELETE FROM order_number")
+        cursor.execute("INSERT INTO order_number (order_number) VALUES (?)", (order_number,))
     conn.commit()
+
+
+def get_order_number():
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, "districts.db")
+    conn = sqlite3.connect(db_path)
+    cursor = conn.cursor()
+    cursor.execute("SELECT order_number FROM order_number")
+    data = cursor.fetchall()
+    order_number = [row[0] for row in data]
+    conn.commit()
+    conn.close()
+    logging.info(f"Номер заявки с который пришел с базы{order_number}")
+    return order_number
 
 
 def check_none_string(text):
