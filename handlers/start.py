@@ -3,7 +3,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from keyboards.start_keyboard import get_kb_start
-from res.resources import return_to_main_menu, text_register_complete, text_greetings
+from res.resources import text_return_to_main_menu, text_register_complete, text_greetings
 
 start_router = Router()
 
@@ -16,7 +16,7 @@ async def cmd_start(message: Message):
     )
 
 
-@start_router.message(F.text == return_to_main_menu())
+@start_router.message(F.text == text_return_to_main_menu())
 async def cmd_start(message: Message):
     await message.answer(
         text_greetings(),

@@ -5,7 +5,7 @@ from aiogram.types import Message
 
 from db_metods.table_user_id import select_admins_same_district, check_none_string, add_worker_db, get_order_number
 from keyboards.start_keyboard import get_kb_start
-from res.resources import bot_token
+from res.resources import text_bot_token
 
 order_status_router_yes = Router()
 order_status_router_no = Router()
@@ -13,7 +13,7 @@ order_status_router_no = Router()
 
 @order_status_router_yes.message(F.text == 'Да✅')
 async def notify_admins_order_status(message: Message):
-    bot = Bot(token=bot_token(), parse_mode="HTML")
+    bot = Bot(token=text_bot_token(), parse_mode="HTML")
     order_number = get_order_number()
     # get_order_number_from_db()
     logging.info(str(message.text))
@@ -25,6 +25,7 @@ async def notify_admins_order_status(message: Message):
             await bot.send_message(other_admins_id[i],
                                    f"Заявку № {check_none_string(order_number)} \nПринял: " +
                                    f"https://t.me/{check_none_string(message.from_user.username)}",
+                                   disable_web_page_preview=True,
                                    reply_markup=get_kb_start())
     await bot.session.close()
     await message.answer("Главное меню",

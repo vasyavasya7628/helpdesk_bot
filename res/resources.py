@@ -1,8 +1,8 @@
-def bot_token() -> str:
+def text_bot_token() -> str:
     return "6639482165:AAGxgzA0LQU0wN6AbzVJU7lvXjGTPTqskmw"
 
 
-def parse_mode() -> str:
+def text_parse_mode() -> str:
     return "HTML"
 
 
@@ -18,7 +18,7 @@ def text_end_register_for_admins() -> str:
     return "Регистрация завершена!"
 
 
-def choose_button() -> str:
+def text_choose_button() -> str:
     return "Выберите"
 
 
@@ -46,16 +46,20 @@ def text_user_choose_district() -> str:
     return "Выберите ведомство из списка(Для специалистов c окно):"
 
 
-def return_to_main_menu() -> str:
+def text_return_to_main_menu() -> str:
     return "Вернуться в главное меню"
 
 
 def text_admin_login() -> str:
-    return "Зарегистрироваться"
+    return "Зарегистрироваться(для it специалистов)"
 
 
-def order_list() -> str:
-    return "Список заявок"
+def text_order_list() -> str:
+    return "Список заявок(для it специалистов)"
+
+
+def text_orders() -> str:
+    return "Выберите ведомство в котором вы хотите посмотреть заявки?"
 
 
 def text_register_complete() -> str:
@@ -66,7 +70,7 @@ def text_greetings() -> str:
     return "Что нужно смертный:"
 
 
-def describe_your_problem() -> str:
+def text_describe_your_problem() -> str:
     return "Опишите вашу проблему"
 
 
@@ -74,8 +78,12 @@ def text_message_correct() -> str:
     return "Вы уверены, что описали проблему правильно?"
 
 
-def lower_case() -> str:
+def text_lower_case() -> str:
     return "_"
+
+
+def text_order_send() -> str:
+    return "Заявка успешно создана! Специалисты свяжутся с вами в ближайшее время."
 
 
 def get_districts() -> list:
@@ -170,7 +178,3 @@ def get_districts() -> list:
         "44"
     ]
     return districts
-
-
-def text_order_send() -> str:
-    return "Заявка успешно создана! Специалисты свяжутся с вами в ближайшее время."

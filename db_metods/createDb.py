@@ -39,20 +39,13 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS order_number (
                 )''')
 
 districts = get_districts()
-# Пример вставки данных из вашего списка districts
+
 for i in range(0, len(districts), 2):
     district_name = districts[i]
     user_id = districts[i + 1]
-
-    # Вставляем данные в таблицу district
     cursor.execute('INSERT INTO districts (district_name) VALUES (?)', (district_name,))
-
-    # Получаем ID вставленной записи
     district_id = cursor.lastrowid
 
-    # Вставляем данные в таблицу user_id
-    # cursor.execute('INSERT INTO users (district_id, user_id) VALUES (?, ?)', (district_id, user_id))
 cursor.execute("INSERT INTO order_number (order_number) VALUES (1)")
-# Сохраняем изменения и закрываем соединение
 conn.commit()
 conn.close()

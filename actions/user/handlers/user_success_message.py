@@ -7,16 +7,17 @@ from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from actions.user.keyboard.kb_sender import kb_sender_buttons
+from actions.user.keyboard.user_success_message_keyboard import get_kb_return
 from actions.user.user_fsm import UserFSM
 from db_metods.table_user_id import select_user_id, check_none_string, add_order_info_to_db, store_order_number
-from res.resources import bot_token, get_districts
+from res.resources import text_bot_token, get_districts, text_order_send
 
 user_success_router = Router()
 
 
 @user_success_router.message(UserFSM.user_success_message)
 async def user_success_message(message: Message, state: FSMContext):
-    bot = Bot(token=bot_token(), parse_mode="HTML")
+    bot = Bot(token=text_bot_token(), parse_mode="HTML")
     data = await state.get_data()
     order_number = generate_random_number()
     data_time = get_time()
@@ -32,13 +33,14 @@ async def user_success_message(message: Message, state: FSMContext):
         await bot.send_message(admin_id[i], f"Заявка №{generate_random_number()}: \n"
                                + f"{message.text}"
                                + f"\n От специалиста: https://t.me/{check_none_string(message.from_user.username)}",
+                               disable_web_page_preview=True,
                                reply_markup=kb_sender_buttons())
     await bot.session.close()
     await state.clear()
-    # await message.answer(
-    #     message.text + text_order_send(),
-    #     reply_markup=get_kb_return()
-    # )
+    await message.answer(
+        text_order_send(),
+        reply_markup=get_kb_return()
+    )
 
 
 def find_user_id(chosen_district):

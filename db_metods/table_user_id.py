@@ -124,6 +124,16 @@ def get_order_number():
     return order_number
 
 
+def order_info(district_id):
+    base_dir = os.path.dirname(os.path.abspath(__file__))
+    db_path = os.path.join(base_dir, "districts.db")
+    with sqlite3.connect(db_path) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM orders WHERE district_id = ?;", (district_id,))
+        results = cursor.fetchall()
+    return list(results)
+
+
 def check_none_string(text):
     if text is None:
         return ""

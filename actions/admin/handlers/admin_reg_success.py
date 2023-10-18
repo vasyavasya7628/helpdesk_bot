@@ -17,10 +17,10 @@ def list_item_equal(message):
             return message
 
 
-def get_district_id(message_text):
+def get_district_id(emoji, message_text):
     districts = get_districts()
     for i in range(len(districts)):
-        if message_text.lower() == "➡" + districts[i].lower():
+        if message_text.lower() == emoji + districts[i].lower():
             return districts[i + 1]
 
 
@@ -28,7 +28,7 @@ def get_district_id(message_text):
 async def adm_reg_success(message: Message, state: FSMContext):
     await state.clear()
     delete_admin_from_db(message.from_user.id)
-    insert_user(get_district_id(message.text),
+    insert_user(get_district_id("➡", message.text),
                 message.from_user.id,
                 message.from_user.username,
                 message.from_user.first_name,
