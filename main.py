@@ -8,11 +8,11 @@ from actions.admin.handlers.admin_district import admin_districts_router
 from actions.admin.handlers.admin_reg_success import admin_reg_success_router
 from actions.admin.handlers.order_status import order_status_router_yes, order_status_router_no
 from actions.orders.handlers.db_orders import order_info_router
+from actions.orders.handlers.menu_districts import menu_district_router
 from actions.user.handlers.user_district import user_district_router
 from actions.user.handlers.user_send_message import user_send_message_router
 from actions.user.handlers.user_success_message import user_success_router
 from handlers.exceptions_catcher import exceptions_router
-from actions.orders.handlers.menu_districts import menu_district_router
 from handlers.start import start_router
 from res.resources import text_bot_token
 
@@ -22,7 +22,6 @@ def get_bot():
     return
 
 
-# Запуск бота
 async def main():
     bot = Bot(token=text_bot_token(), parse_mode="HTML")
     dp = Dispatcher()

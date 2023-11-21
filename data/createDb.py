@@ -3,7 +3,7 @@ import sqlite3
 from res.resources import get_districts
 
 # Подключение к базе данных (если она существует) или создание новой
-conn = sqlite3.connect('../db_metods/districts.db')
+conn = sqlite3.connect('/districts.db')
 cursor = conn.cursor()
 
 # Создание таблицы для районов (district)

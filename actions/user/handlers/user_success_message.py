@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import random
 import time
@@ -9,25 +10,26 @@ from aiogram.types import Message
 from actions.user.keyboard.kb_sender import kb_sender_buttons
 from actions.user.keyboard.user_success_message_keyboard import get_kb_return
 from actions.user.user_fsm import UserFSM
-from db_metods.table_user_id import select_user_id, check_none_string, add_order_info_to_db, store_order_number
-from res.resources import text_bot_token, get_districts, text_order_send
+from data.db_methods import select_userid, check_none_string, add_order_info, store_order_number
+from res.resources import get_districts, text_order_send
 
 user_success_router = Router()
 
 
 @user_success_router.message(UserFSM.user_success_message)
-async def user_success_message(message: Message, state: FSMContext):
-    bot = Bot(token=text_bot_token(), parse_mode="HTML")
+async def user_success_message(message: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
     order_number = generate_random_number()
     data_time = get_time()
-    store_order_number(order_number)
-    add_order_info_to_db(find_equal_district_id(data['choose_district']),
-                         order_number,
-                         check_none_string(message.text),
-                         f"https://t.me/{check_none_string(message.from_user.username)}",
-                         data_time)
-    admin_id = find_user_id(data['choose_district'])
+    await asyncio.gather(
+        store_order_number(order_number),
+        add_order_info(find_equal_district_id(data['choose_district']),
+                       order_number,
+                       check_none_string(message.text),
+                       f"https://t.me/{check_none_string(message.from_user.username)}",
+                       data_time)
+    )
+    admin_id = await find_user_id(data['choose_district'])
     for i in range(len(admin_id)):
         logging.info(f"user id = {admin_id[i]}")
         await bot.send_message(admin_id[i], f"Заявка №{generate_random_number()}: \n"
@@ -35,18 +37,18 @@ async def user_success_message(message: Message, state: FSMContext):
                                + f"\n От специалиста: https://t.me/{check_none_string(message.from_user.username)}",
                                disable_web_page_preview=True,
                                reply_markup=kb_sender_buttons())
-    await bot.session.close()
     await state.clear()
     await message.answer(
         text_order_send(),
         reply_markup=get_kb_return()
     )
+    await bot.session.close()
 
 
 def find_user_id(chosen_district):
     district_id = find_equal_district_id(chosen_district)
     # возвращается список ид админов которые принадлежат выбранному ведомству
-    return select_user_id(district_id)
+    return select_userid(district_id)
 
 
 def find_equal_district_id(chosen_district):
