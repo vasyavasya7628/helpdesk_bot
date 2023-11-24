@@ -1,7 +1,7 @@
 from aiogram.types import ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from actions.user.keyboard.user_districts_kb import list_to_buttons
+from actions.keyboards.users.user_districts_kb import list_to_buttons
 
 
 def kb_menu_districts() -> ReplyKeyboardMarkup:

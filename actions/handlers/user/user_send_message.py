@@ -4,9 +4,8 @@ from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
 
-from actions.user.user_fsm import UserFSM
+from actions.keyboards.users.user_fsm import UserFSM
 from res.resources import text_describe_your_problem
-
 
 user_send_message_router = Router()
 

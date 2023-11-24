@@ -1,12 +1,9 @@
-import asyncio
-
-import aiogram.types
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from actions.admin.admin_fsm import AdminFSM
-from actions.admin.keyboards.adm_success_keyboard import get_kb_reg_success
+from actions.handlers.admin.admin_fsm import AdminFSM
+from actions.keyboards.admin.adm_success_keyboard import get_kb_reg_success
 from data.db_methods import insert_user, delete_admin
 from res.resources import text_end_register_for_admins, get_districts
 

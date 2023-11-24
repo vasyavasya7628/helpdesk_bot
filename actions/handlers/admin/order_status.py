@@ -4,7 +4,7 @@ from aiogram import Router, F, Bot
 from aiogram.types import Message
 
 from data.db_methods import select_admins_same_district, check_none_string, add_worker, get_order_number
-from keyboards.start_keyboard import get_kb_start
+from actions.keyboards.menu.start_keyboard import get_kb_start
 from res.resources import text_bot_token
 
 order_status_router_yes = Router()

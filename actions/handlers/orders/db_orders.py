@@ -3,8 +3,8 @@ import asyncio
 from aiogram import Router, F
 from aiogram.types import Message
 
-from actions.admin.handlers.admin_reg_success import get_district_id
-from actions.orders.keyboards.menu_district_keyboard import kb_menu_districts
+from actions.handlers.admin.admin_reg_success import get_district_id
+from actions.keyboards.orders.menu_district_keyboard import kb_menu_districts
 from data.db_methods import get_order_info
 
 order_info_router = Router()
@@ -31,11 +31,11 @@ def generate_table_output(result):
     # Перебираем данные и добавляем их в форматированный текст
     for entry in result:
         message = ("______________________________\n"
-                   f"Номер заявки: {entry[2]} \n"
-                   f"От кого: {entry[4]}\n"
-                   f"Исполнитель: {none_check(entry[5])} \n")
-        message += f"   - Сообщение: {entry[3]}\n"
-        message += f"   - Время: {entry[6]}\n"
+                   f"Номер заявки: {entry[0]} \n"
+                   f"От кого: {entry[1]}\n"
+                   f"Исполнитель: {none_check(entry[2])} \n")
+        message += f"   - Сообщение: {entry[2]}\n"
+        message += f"   - Время: {entry[0]}\n"
         formatted_message += message
     return formatted_message
 

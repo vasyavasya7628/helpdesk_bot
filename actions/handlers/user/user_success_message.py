@@ -7,10 +7,10 @@ from aiogram import Router, Bot
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from actions.user.keyboard.kb_sender import kb_sender_buttons
-from actions.user.keyboard.user_success_message_keyboard import get_kb_return
-from actions.user.user_fsm import UserFSM
-from data.db_methods import select_userid, check_none_string, add_order_info, store_order_number
+from actions.keyboards.users.kb_sender import kb_sender_buttons
+from actions.keyboards.users.user_fsm import UserFSM
+from actions.keyboards.users.user_success_message_keyboard import get_kb_return
+from data.db_methods import select_user_id, check_none_string, add_order_info, store_order_number
 from res.resources import get_districts, text_order_send
 
 user_success_router = Router()
@@ -48,7 +48,7 @@ async def user_success_message(message: Message, state: FSMContext, bot: Bot):
 def find_user_id(chosen_district):
     district_id = find_equal_district_id(chosen_district)
     # возвращается список ид админов которые принадлежат выбранному ведомству
-    return select_userid(district_id)
+    return select_user_id(district_id)
 
 
 def find_equal_district_id(chosen_district):
