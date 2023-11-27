@@ -4,6 +4,8 @@ import re
 
 import aiosqlite
 
+from res.resources import order_status
+
 
 def get_db_path():
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -61,9 +63,11 @@ async def delete_admin(admin_id):
 async def add_order_info(district_id, order_number, order_description, from_user, data_time):
     try:
         async with aiosqlite.connect(get_db_path()) as conn:
-            await conn.execute('''INSERT INTO orders (district_id, user_problem_description, from_user, order_number, 
-            date_create) VALUES (?, ?, ?, ?, ?)''',
-                               (district_id, order_description, from_user, order_number, data_time))
+            await conn.execute('''INSERT INTO orders (district_id, user_problem_description, from_user, order_number,
+            date_create, status) VALUES (?, ?, ?, ?, ?, ?)''',
+                               (
+                                   district_id, order_description, from_user, order_number, data_time,
+                                   order_status.get("WAITING")))
             await conn.commit()
     except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function add_order_info: {error}")

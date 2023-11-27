@@ -1,4 +1,3 @@
-import asyncio
 import logging
 import random
 import time
@@ -21,14 +20,13 @@ async def user_success_message(message: Message, state: FSMContext, bot: Bot):
     data = await state.get_data()
     order_number = generate_random_number()
     data_time = get_time()
-    await asyncio.gather(
-        store_order_number(order_number),
-        add_order_info(find_equal_district_id(data['choose_district']),
-                       order_number,
-                       check_none_string(message.text),
-                       f"https://t.me/{check_none_string(message.from_user.username)}",
-                       data_time)
-    )
+    await store_order_number(order_number),
+    await add_order_info(find_equal_district_id(data['choose_district']),
+                         order_number,
+                         check_none_string(message.text),
+                         f"https://t.me/{check_none_string(message.from_user.username)}",
+                         data_time)
+
     admin_id = await find_user_id(data['choose_district'])
     for i in range(len(admin_id)):
         logging.info(f"user id = {admin_id[i]}")
@@ -42,7 +40,6 @@ async def user_success_message(message: Message, state: FSMContext, bot: Bot):
         text_order_send(),
         reply_markup=get_kb_return()
     )
-    await bot.session.close()
 
 
 def find_user_id(chosen_district):

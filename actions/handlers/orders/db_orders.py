@@ -13,7 +13,7 @@ order_info_router = Router()
 @order_info_router.message(F.text.startswith('💼'))
 async def show_db_orders(message: Message):
     district_id = get_district_id("💼", message.text)
-    result = await asyncio.gather(get_order_info(district_id))
+    result = await get_order_info(district_id)
     table_view = generate_table_output(result)
     while table_view:
         part, table_view = table_view[:4096], table_view[4096:]
@@ -27,15 +27,14 @@ async def show_db_orders(message: Message):
 
 def generate_table_output(result):
     formatted_message = f"Список заявок:\n"
-
-    # Перебираем данные и добавляем их в форматированный текст
-    for entry in result:
+    for i in range(len(result)):
         message = ("______________________________\n"
-                   f"Номер заявки: {entry[0]} \n"
-                   f"От кого: {entry[1]}\n"
-                   f"Исполнитель: {none_check(entry[2])} \n")
-        message += f"   - Сообщение: {entry[2]}\n"
-        message += f"   - Время: {entry[0]}\n"
+                   f"Номер заявки: {result[i][2]} \n"
+                   f"От кого: {result[i][4]}\n"
+                   f"Исполнитель: {none_check(result[0][5])} \n")
+        message += f"   - Сообщение: {result[i][2]}\n"
+        message += f"   - Время: {result[i][7]}\n"
+        message += f"   - Статус: {result[i][7]}\n"
         formatted_message += message
     return formatted_message
 

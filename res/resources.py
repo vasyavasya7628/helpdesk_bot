@@ -115,3 +115,10 @@ def get_districts() -> list:
 
     ]
     return districts
+
+
+order_status = {
+    "WAITING": "ожидает реакции",
+    "IN_PROCESS": "в работе",
+    "DONE": "ожидает реакции"
+}
