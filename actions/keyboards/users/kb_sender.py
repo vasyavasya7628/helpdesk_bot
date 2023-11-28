@@ -1,5 +1,5 @@
-from aiogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup
-from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
+from aiogram.types import InlineKeyboardMarkup
+from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 
 def kb_sender_buttons() -> InlineKeyboardMarkup:
