@@ -3,17 +3,18 @@ import logging
 from aiogram import Router, F, Bot
 from aiogram.types import Message
 
-from data.db_methods import select_admins_same_district, check_none_string, add_worker, get_order_number
 from actions.keyboards.menu.start_keyboard import get_kb_start
-from res.resources import text_bot_token
+from data.db_methods import select_admins_same_district, check_none_string, add_worker, get_order_number
+from res.resources import order_actions
 
 order_status_router_yes = Router()
 order_status_router_no = Router()
 
-
+order_actions.get("GET_WORK")
+order_actions.get("DELAY_WORK")
+order_actions.get("END_WORK")
 @order_status_router_yes.message(F.text == 'Да✅')
-async def notify_admins_order_status(message: Message):
-    bot = Bot(token=text_bot_token(), parse_mode="HTML")
+async def notify_admins_order_status(message: Message, bot: Bot):
     order_number = await get_order_number()
     logging.info(f"НОМЕР ЗАЯВКИ{order_number}")
     logging.info(str(message.text))

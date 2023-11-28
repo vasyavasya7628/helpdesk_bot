@@ -30,11 +30,11 @@ def generate_table_output(result):
     for i in range(len(result)):
         message = ("______________________________\n"
                    f"Номер заявки: {result[i][2]} \n"
-                   f"От кого: {result[i][4]}\n"
-                   f"Исполнитель: {none_check(result[0][5])} \n")
+                   f"От кого: {result[i][5]}\n"
+                   f"Исполнитель: {none_check(result[0][6])} \n")
         message += f"   - Сообщение: {result[i][2]}\n"
         message += f"   - Время: {result[i][7]}\n"
-        message += f"   - Статус: {result[i][7]}\n"
+        message += f"   - Статус: {result[i][10]}\n"
         formatted_message += message
     return formatted_message
 

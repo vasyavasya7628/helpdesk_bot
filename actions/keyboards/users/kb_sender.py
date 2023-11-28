@@ -1,9 +1,9 @@
-from aiogram.types import ReplyKeyboardMarkup
-from aiogram.utils.keyboard import ReplyKeyboardBuilder
+from aiogram.types import ReplyKeyboardMarkup, InlineKeyboardMarkup
+from aiogram.utils.keyboard import ReplyKeyboardBuilder, InlineKeyboardBuilder
 
 
-def kb_sender_buttons() -> ReplyKeyboardMarkup:
-    kb = ReplyKeyboardBuilder()
+def kb_sender_buttons() -> InlineKeyboardMarkup:
+    kb = InlineKeyboardBuilder()
     kb.button(text="Да✅")
     kb.button(text="Нет❌")
     kb.adjust(2)
