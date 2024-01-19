@@ -4,7 +4,7 @@ import re
 
 import aiosqlite
 
-from res.resources import order_status
+from res.resources import OrderStatus
 
 
 def get_db_path():
@@ -67,7 +67,7 @@ async def add_order_info(district_id, order_number, order_description, from_user
             date_create, status) VALUES (?, ?, ?, ?, ?, ?)''',
                                (
                                    district_id, order_description, from_user, order_number, data_time,
-                                   order_status.get("WAITING")))
+                                   OrderStatus.WAITING.value))
             await conn.commit()
     except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function add_order_info: {error}")
