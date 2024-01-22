@@ -10,7 +10,7 @@ from actions.keyboards.users.kb_sender import kb_sender_buttons
 from actions.keyboards.users.user_fsm import UserFSM
 from actions.keyboards.users.user_success_message_keyboard import get_kb_return
 from data.db_methods import select_user_id, check_none_string, add_order_info, store_order_number
-from res.resources import get_districts, text_order_send
+from res.resources import Text
 
 user_success_router = Router()
 
@@ -37,7 +37,7 @@ async def user_success_message(message: Message, state: FSMContext, bot: Bot):
                                reply_markup=kb_sender_buttons())
     await state.clear()
     await message.answer(
-        text_order_send(),
+        Text.ORDER_SEND.value,
         reply_markup=get_kb_return()
     )
 
@@ -49,7 +49,7 @@ def find_user_id(chosen_district):
 
 
 def find_equal_district_id(chosen_district):
-    list_district = get_districts()
+    list_district = Text.GET_DISTRICTS.value
     for i in range(len(list_district)):
         logging.info(f"ВЕДОМСТВО:{i + 1}")
         if f"✅{list_district[i]}" == chosen_district:

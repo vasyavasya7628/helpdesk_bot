@@ -1,16 +1,15 @@
 from aiogram import F, Router
-from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
 from actions.keyboards.orders.menu_district_keyboard import kb_menu_districts
-from res.resources import order_list, text_orders
+from res.resources import Text
 
 menu_district_router = Router()
 
 
-@menu_district_router.message(F.text == order_list())
-async def select_district(message: Message, state: FSMContext):
+@menu_district_router.message(F.text == Text.ORDER_LIST.value)
+async def select_district(message: Message):
     await message.answer(
-        text_orders(),
+        Text.ORDERS.value,
         reply_markup=kb_menu_districts()
     )

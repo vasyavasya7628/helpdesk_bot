@@ -14,7 +14,7 @@ from actions.handlers.user.user_send_message import user_send_message_router
 from actions.handlers.user.user_success_message import user_success_router
 from actions.handlers.menu.exceptions_catcher import exceptions_router
 from actions.handlers.menu.start import start_router
-from res.resources import text_bot_token
+from res.resources import Text
 
 
 # https://getemoji.com/
@@ -23,7 +23,7 @@ def get_bot():
 
 
 async def main():
-    bot = Bot(token=text_bot_token(), parse_mode="HTML")
+    bot = Bot(token=Text.BOT_TOKEN.value, parse_mode="HTML")
     dp = Dispatcher()
     dp.include_routers(start_router,
                        admin_districts_router,

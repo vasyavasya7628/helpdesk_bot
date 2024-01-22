@@ -3,11 +3,11 @@ import logging
 from aiogram.types import ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-import res.resources as text
+from res.resources import Text
 
 
 def adm_buttons_from_districts(kb):
-    districts_copy = text.get_districts()
+    districts_copy = Text.GET_DISTRICTS.value
     for i in range(len(districts_copy) - 1):
         if i % 2 == 0:
             logging.info(f"➡{districts_copy[i]}")

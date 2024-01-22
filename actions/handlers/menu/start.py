@@ -3,7 +3,7 @@ from aiogram.filters import Command
 from aiogram.types import Message
 
 from actions.keyboards.menu.start_keyboard import get_kb_start
-from res.resources import text_return_to_main_menu, text_register_complete, text_greetings
+from res.resources import Text
 
 start_router = Router()
 
@@ -11,31 +11,31 @@ start_router = Router()
 @start_router.message(Command("start"))
 async def cmd_start(message: Message):
     await message.answer(
-        text_greetings(),
+        Text.GREETINGS.value,
         reply_markup=get_kb_start()
     )
 
 
-@start_router.message(F.text == text_return_to_main_menu())
+@start_router.message(F.text == Text.RETURN_TO_MAIN_MENU.value)
 async def cmd_start(message: Message):
     await message.answer(
-        text_greetings(),
+        Text.GREETINGS.value,
         reply_markup=get_kb_start()
     )
 
 
 @start_router.message(
-    F.text.lower() == "меню".lower())
+    F.text.lower() == Text.MENU.value.lower())
 async def cmd_start(message: Message):
     await message.answer(
-        text_greetings(),
+        Text.GREETINGS.value,
         reply_markup=get_kb_start()
     )
 
 
-@start_router.message(F.text.lower() == text_register_complete().lower())
+@start_router.message(F.text.lower() == Text.REGISTER_COMPLETE.value.lower())
 async def cmd_start(message: Message):
     await message.answer(
-        text_greetings(),
+        Text.GREETINGS.value,
         reply_markup=get_kb_start()
     )

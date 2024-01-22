@@ -1,6 +1,7 @@
-import sqlite3
 import os
-from res.resources import get_districts
+import sqlite3
+
+from res.resources import Text
 
 # Подключение к базе данных (если она существует) или создание новой
 conn = sqlite3.connect('districts.db')
@@ -45,7 +46,7 @@ if os.path.exists("districts.db"):
     conn.commit()
     conn.close()
 else:
-    districts = get_districts()
+    districts = Text.GET_DISTRICTS.value
 
     for i in range(0, len(districts), 2):
         district_name = districts[i]

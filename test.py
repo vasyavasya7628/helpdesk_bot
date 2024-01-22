@@ -2,9 +2,11 @@ from enum import Enum
 
 
 class Names(Enum):
-    vasya = "vasua"
-    jana = "jana"
-    rocket = "rocket"
+    GET_DISTRICTS = [
+        "Отдел 'Мои документы' город Кемерово, бр Пионерский, 3",
+        "26",
+        "31"
+    ]
 
 
-print(Names.jana.value)
+print(Names.GET_DISTRICTS.value)
