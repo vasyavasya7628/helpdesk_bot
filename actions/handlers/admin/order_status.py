@@ -4,16 +4,19 @@ from aiogram import Router, F, Bot
 from aiogram.types import Message
 
 from actions.keyboards.menu.start_keyboard import get_kb_start
-from data.db_methods import select_admins_same_district, check_none_string, add_worker, get_order_number
+from data.db_methods import select_admins_same_district, check_none_string, add_worker, get_order_number, \
+    change_order_status
+from res.resources import Text, OrderStatus
 
 order_status_router_yes = Router()
 order_status_router_no = Router()
 
 
-@order_status_router_yes.message(F.text == 'Да✅')
+@order_status_router_yes.message(F.text == Text.SEND_YES.value)
 async def notify_admins_order_status(message: Message, bot: Bot):
     order_number = await get_order_number()
     logging.info(f"НОМЕР ЗАЯВКИ{order_number}")
+    await change_order_status(order_number, OrderStatus.IN_PROCESS.value)
     logging.info(str(message.text))
     other_admins_id = await select_admins_same_district(message.from_user.id)
     await add_worker(f"https://t.me/{check_none_string(message.from_user.username)}",

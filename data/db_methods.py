@@ -103,9 +103,22 @@ async def get_order_number():
         async with aiosqlite.connect(get_db_path()) as conn:
             cursor = await conn.execute("SELECT order_number FROM order_number")
             data = await cursor.fetchall()
+            logging.info(f"{[row[0] for row in data]}")
             return [row[0] for row in data]
     except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function store_order_number: {error}")
+
+
+async def change_order_status(order_number, new_status):
+    try:
+        db_path = get_db_path()
+        async with aiosqlite.connect(db_path) as conn:
+            await conn.execute("UPDATE orders SET status = ? WHERE order_number = ?", (new_status,
+                                                                                       convert_string_to_int(
+                                                                                           str(order_number))))
+            await conn.commit()
+    except aiosqlite.Error as error:
+        logging.error(f"[ERROR] in function change_order_status: {error}")
 
 
 async def get_order_info(district_id):
