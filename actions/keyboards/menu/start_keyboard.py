@@ -13,3 +13,5 @@ def get_kb_start() -> ReplyKeyboardMarkup:
 
     kb.adjust(2)
     return kb.as_markup(resize_keyboard=True)
+
+

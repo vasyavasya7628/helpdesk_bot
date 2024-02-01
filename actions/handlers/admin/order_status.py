@@ -20,7 +20,7 @@ async def notify_admins_order_status(message: Message, bot: Bot):
     logging.info(str(message.text))
     other_admins_id = await select_admins_same_district(message.from_user.id)
     await add_worker(f"https://t.me/{check_none_string(message.from_user.username)}",
-                     order_number)
+                     order_number, message.from_user.id)
     for i in range(len(other_admins_id)):
         if other_admins_id[i] is not message.from_user.id:
             await bot.send_message(other_admins_id[i],
@@ -33,7 +33,7 @@ async def notify_admins_order_status(message: Message, bot: Bot):
                          reply_markup=get_kb_start())
 
 
-@order_status_router_no.message(F.text == 'Нет❌')
+@order_status_router_no.message(F.text == Text.SEND_NO.value)
 async def return_to_main(message: Message):
     await message.answer("Главное меню",
                          reply_markup=get_kb_start())

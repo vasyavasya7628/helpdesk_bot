@@ -1,6 +1,7 @@
 import logging
 import os
 import re
+import sqlite3
 
 import aiosqlite
 
@@ -73,12 +74,14 @@ async def add_order_info(district_id, order_number, order_description, from_user
         logging.info(f"[ERROR] in function add_order_info: {error}")
 
 
-async def add_worker(to_admin, order_number):
+async def add_worker(to_admin, order_number, admin_telegram_id):
     try:
         async with aiosqlite.connect(get_db_path()) as conn:
-            await conn.execute('''UPDATE orders
-                                  SET to_admin = ?
-                                  WHERE order_number = ?''', (to_admin, convert_string_to_int(str(order_number))))
+            await conn.execute('''UPDATE `orders`
+                                  SET to_admin = ?,
+                                      admin_telegram_id = ?
+                                  WHERE order_number = ?''',
+                               (to_admin, admin_telegram_id, convert_string_to_int(str(order_number))))
             await conn.commit()
     except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function add_worker: {error}")
@@ -113,9 +116,9 @@ async def change_order_status(order_number, new_status):
     try:
         db_path = get_db_path()
         async with aiosqlite.connect(db_path) as conn:
-            await conn.execute("UPDATE orders SET status = ? WHERE order_number = ?", (new_status,
-                                                                                       convert_string_to_int(
-                                                                                           str(order_number))))
+            await conn.execute("UPDATE `orders` SET status = ? WHERE order_number = ?", (new_status,
+                                                                                        convert_string_to_int(
+                                                                                            str(order_number))))
             await conn.commit()
     except aiosqlite.Error as error:
         logging.error(f"[ERROR] in function change_order_status: {error}")
@@ -125,12 +128,28 @@ async def get_order_info(district_id):
     try:
         await clear_db()
         async with aiosqlite.connect(get_db_path()) as conn:
-            cursor = await conn.execute("SELECT * FROM orders WHERE district_id = ? ORDER BY id DESC LIMIT 10;",
-                                        (district_id,))
+            cursor = await conn.execute(
+                "SELECT * FROM orders WHERE district_id = ? ORDER BY id DESC LIMIT 10;",
+                (district_id,))
             results = await cursor.fetchall()
             logging.info(results)
         return list(results)
     except aiosqlite.Error as error:
+        logging.info(f"[ERROR] in function get_order_info: {error}")
+
+
+# ну костыль да, но это работает. Синхронный запрос в синхронную функцию.
+# Потому что результат асинхронной функции в синхронную не работает
+def get_orders_waiting():
+    try:
+        with sqlite3.connect(get_db_path()) as conn:
+            cursor = conn.execute(
+                "SELECT * FROM orders WHERE status = ?;",
+                (OrderStatus.WAITING.value,))
+            results = cursor.fetchall()
+            logging.info(f"get_orders_waiting: {results}")
+        return list(results)
+    except sqlite3.Error as error:
         logging.info(f"[ERROR] in function get_order_info: {error}")
 
 
@@ -139,7 +158,7 @@ async def clear_db():
         async with aiosqlite.connect(get_db_path()) as conn:
             cursor = await conn.execute('SELECT COUNT(*) FROM orders')
             count = (await cursor.fetchone())[0]
-            if count > 1000:
+            if count > 10000:
                 await conn.execute('''
                                    DELETE FROM orders
                                    WHERE id NOT IN (
@@ -152,6 +171,20 @@ async def clear_db():
 
     except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function clear_db: {error}")
+
+
+def sync_get_order_info(admin_telegram_id="https://t.me/i0x3141"):
+    try:
+        conn = sqlite3.connect(get_db_path())
+        cursor = conn.execute(
+            "SELECT * FROM orders WHERE admin_telegram_id = ? ORDER BY id DESC LIMIT 10;",
+            (admin_telegram_id,))
+        results = cursor.fetchall()
+        logging.info(results)
+        conn.close()
+        return list(results)
+    except sqlite3.Error as error:
+        logging.info(f"[ERROR] in function get_order_info: {error}")
 
 
 def check_none_string(text):

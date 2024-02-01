@@ -29,8 +29,8 @@ def generate_table_output(result):
         message = ("______________________________\n"
                    f"Номер заявки: {result[i][2]} \n"
                    f"От кого: {result[i][5]}\n"
-                   f"Исполнитель: {none_check(result[0][6])} \n")
-        message += f"   - Сообщение: {result[i][2]}\n"
+                   f"Исполнитель: {none_check(result[i][6])} \n")
+        message += f"   - Сообщение: {result[i][3]}\n"
         message += f"   - Время: {result[i][7]}\n"
         message += f"   - Статус: {result[i][10]}\n"
         formatted_message += message
@@ -39,6 +39,6 @@ def generate_table_output(result):
 
 def none_check(text):
     if text is None:
-        return "Нет \n"
+        return "\n"
     else:
         return text

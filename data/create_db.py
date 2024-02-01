@@ -34,6 +34,7 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS orders (
                     time_taken,
                     date_close TEXT,
                     status TEXT,
+                    admin_telegram_id INTEGER,
                     FOREIGN KEY (district_id) REFERENCES district (id)
                 )''')
 
