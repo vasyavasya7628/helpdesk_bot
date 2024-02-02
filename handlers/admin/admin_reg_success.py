@@ -2,8 +2,8 @@ from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from actions.handlers.admin.admin_fsm import AdminFSM
-from actions.keyboards.admin.adm_success_keyboard import get_kb_reg_success
+from handlers.admin.admin_fsm import AdminFSM
+from keyboards.admin.adm_success_keyboard import get_kb_reg_success
 from data.db_methods import insert_user, delete_admin
 from res.resources import Text
 

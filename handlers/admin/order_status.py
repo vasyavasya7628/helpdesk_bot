@@ -3,7 +3,7 @@ import logging
 from aiogram import Router, F, Bot
 from aiogram.types import Message
 
-from actions.keyboards.menu.start_keyboard import get_kb_start
+from keyboards.menu.start_keyboard import get_kb_start
 from data.db_methods import select_admins_same_district, check_none_string, add_worker, get_order_number, \
     change_order_status
 from res.resources import Text, OrderStatus

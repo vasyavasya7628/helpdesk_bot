@@ -2,7 +2,6 @@ from enum import Enum
 
 
 class Text(Enum):
-    BOT_TOKEN = "6639482165:AAGxgzA0LQU0wN6AbzVJU7lvXjGTPTqskmw"
     PARSE_MODE = "HTML"
     TELL_ABOUT_YOUR_PROBLEM = "Сообщить о неисправности/проблеме (Для специалистов)"
     REGISTER_FOR_ADMINS = "Зарегистрироваться(Для администраторов)"

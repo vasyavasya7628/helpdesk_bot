@@ -1,7 +1,7 @@
 from aiogram import F, Router
 from aiogram.types import Message
 
-from actions.keyboards.orders.menu_district_keyboard import kb_menu_districts
+from keyboards.orders.menu_district_keyboard import kb_menu_districts
 from res.resources import Text
 
 menu_district_router = Router()

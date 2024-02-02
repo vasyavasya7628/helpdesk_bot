@@ -2,8 +2,8 @@ from aiogram import Router, F
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from actions.keyboards.users.user_districts_kb import kb_user_districts
-from actions.keyboards.users.user_fsm import UserFSM
+from keyboards.users.user_districts_kb import kb_user_districts
+from keyboards.users.user_fsm import UserFSM
 from res.resources import Text
 
 user_district_router = Router()

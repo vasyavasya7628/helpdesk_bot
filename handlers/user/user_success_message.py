@@ -6,9 +6,9 @@ from aiogram import Router, Bot
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from actions.keyboards.users.kb_sender import kb_sender_buttons
-from actions.keyboards.users.user_fsm import UserFSM
-from actions.keyboards.users.user_success_message_keyboard import get_kb_return
+from keyboards.users.kb_sender import kb_sender_buttons
+from keyboards.users.user_fsm import UserFSM
+from keyboards.users.user_success_message_keyboard import get_kb_return
 from data.db_methods import select_user_id, check_none_string, add_order_info, store_order_number
 from res.resources import Text
 

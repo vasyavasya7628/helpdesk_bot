@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from actions.keyboards.menu.start_keyboard import get_kb_start
+from keyboards.menu.start_keyboard import get_kb_start
 from res.resources import Text
 
 start_router = Router()

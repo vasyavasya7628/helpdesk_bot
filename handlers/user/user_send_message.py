@@ -2,7 +2,7 @@ import logging
 from aiogram import Router
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message, ReplyKeyboardRemove
-from actions.keyboards.users.user_fsm import UserFSM
+from keyboards.users.user_fsm import UserFSM
 from res.resources import Text
 
 user_send_message_router = Router()

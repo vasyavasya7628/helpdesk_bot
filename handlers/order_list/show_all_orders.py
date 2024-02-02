@@ -1,8 +1,8 @@
 from aiogram import Router, F
 from aiogram.types import Message
 
-from actions.handlers.admin.admin_reg_success import get_district_id
-from actions.keyboards.orders.menu_district_keyboard import kb_menu_districts
+from handlers.admin.admin_reg_success import get_district_id
+from keyboards.orders.menu_district_keyboard import kb_menu_districts
 from data.db_methods import get_order_info
 
 order_info_router = Router()
