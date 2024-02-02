@@ -173,7 +173,7 @@ async def clear_db():
         logging.info(f"[ERROR] in function clear_db: {error}")
 
 
-def sync_get_order_info(admin_telegram_id="https://t.me/i0x3141"):
+def sync_get_order_info(admin_telegram_id="None"):
     try:
         conn = sqlite3.connect(get_db_path())
         cursor = conn.execute(

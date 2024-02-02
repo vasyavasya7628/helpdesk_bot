@@ -9,6 +9,7 @@ from handlers.admin.admin_reg_success import admin_reg_success_router
 from handlers.admin.order_status import order_status_router_yes, order_status_router_no
 from handlers.menu.exceptions_catcher import exceptions_router
 from handlers.menu.start import start_router
+from handlers.my_orders.manage_my_orders import manage_my_orders_router
 from handlers.my_orders.my_orders import my_orders_router
 from handlers.order_list.menu_districts import menu_district_router
 from handlers.order_list.show_all_orders import order_info_router
@@ -31,6 +32,7 @@ async def main():
                        admin_reg_success_router,
                        order_status_router_yes,
                        order_status_router_no,
+                       manage_my_orders_router,
                        user_district_router,
                        waiting_reaction_router,
                        user_send_message_router,
