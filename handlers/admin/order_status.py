@@ -16,7 +16,7 @@ order_status_router_no = Router()
 async def notify_admins_order_status(message: Message, bot: Bot):
     order_number = await get_order_number()
     logging.info(f"НОМЕР ЗАЯВКИ{order_number}")
-    await change_order_status(order_number, OrderStatus.IN_PROCESS.value)
+    await change_order_status(order_number, OrderStatus.IN_PROGRESS.value)
     logging.info(str(message.text))
     other_admins_id = await select_admins_same_district(message.from_user.id)
     await add_worker(f"https://t.me/{check_none_string(message.from_user.username)}",

@@ -1,4 +1,4 @@
-data = [
+"""data = [
     (10, 26, 18346208, 'Калькулятор сломался, сижу с петуха в деревне', None, 'https://t.me/luciferthelight',
      'https://t.me/i0x3141', '01.02.2024, 10:09', None, None, 'в работе', 1623218378),
     (9, 26, 18628322, 'Мой кампуктер убил вирус, сижу с калькулятора!', None, 'https://t.me/luciferthelight', None,
@@ -38,4 +38,21 @@ def generate_table_output(result):
 
 
 tuple_data = generate_table_output(data)
-print(tuple_data)
+print(tuple_data)"""
+"""
+in_str = f"close|{824194214}|{12421412421}"
+if in_str.startswith("close"):
+    my_list = in_str.split("|")"""
+
+response = [
+    (10, 26, 18346208, 'Калькулятор сломался, сижу с петуха в деревне', None, 'https://t.me/luciferthelight',
+     'https://t.me/i0x3141', '01.02.2024, 10:09', None, None, 'в работе', 1623218378)]
+response2 = [
+    (11, 26, 18346208, 'Калькулятор сломался, сижу с петуха в деревне', None, 'https://t.me/luciferthelight',
+     'https://t.me/i0x3141', '01.02.2024, 10:09', None, None, 'в работе', 1623218378)]
+data = [*response[0]]
+change_data = [*response2[0]]
+if data == change_data:
+    print("OK")
+for i in range(len(data)):
+    print(type(data[i]))

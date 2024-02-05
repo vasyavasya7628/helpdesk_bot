@@ -5,7 +5,7 @@ import sqlite3
 
 import aiosqlite
 
-from res.resources import OrderStatus
+from res.resources import OrderStatus, OrderDatabaseActions
 
 
 def get_db_path():
@@ -117,8 +117,8 @@ async def change_order_status(order_number, new_status):
         db_path = get_db_path()
         async with aiosqlite.connect(db_path) as conn:
             await conn.execute("UPDATE `orders` SET status = ? WHERE order_number = ?", (new_status,
-                                                                                        convert_string_to_int(
-                                                                                            str(order_number))))
+                                                                                         convert_string_to_int(
+                                                                                             str(order_number))))
             await conn.commit()
     except aiosqlite.Error as error:
         logging.error(f"[ERROR] in function change_order_status: {error}")
@@ -151,6 +151,40 @@ def get_orders_waiting():
         return list(results)
     except sqlite3.Error as error:
         logging.info(f"[ERROR] in function get_order_info: {error}")
+
+
+async def change_status(action, admin_telegram_id, order_number):
+    try:
+        with sqlite3.connect(get_db_path()) as conn:
+            if OrderDatabaseActions.CLOSE.value == action:
+                cursor = conn.execute(
+                    "UPDATE your_table_name SET status = ? WHERE admin_telegram_id = ? AND order_number = ?",
+                    (OrderStatus.ENDED.value, admin_telegram_id, order_number))
+            elif OrderDatabaseActions.DELAY.value == action:
+                cursor = conn.execute(
+                    "UPDATE your_table_name SET status = ? WHERE admin_telegram_id = ? AND order_number = ?",
+                    (OrderStatus.DELAYED.value, admin_telegram_id, order_number))
+            else:
+                logging.info("ACTION NOT FOUND. MUST BE DELAY OR CLOSED")
+
+            results = cursor.fetchall()
+            logging.info(f"find_admin_orders: {results}")
+        return list(results)
+    except sqlite3.Error as error:
+        logging.info(f"[ERROR] in function find_admin_orders: {error}")
+
+
+async def find_my_orders(order_number, admin_telegram_id):
+    try:
+        with sqlite3.connect(get_db_path()) as conn:
+            cursor = conn.execute(
+                "SELECT * FROM orders WHERE admin_telegram_id = ? AND order_number = ?",
+                (admin_telegram_id, order_number))
+            results = cursor.fetchall()
+            logging.info(f"find_my_orders: {results}")
+        return list(results)
+    except sqlite3.Error as error:
+        logging.info(f"[ERROR] in function find_my_orders: {error}")
 
 
 async def clear_db():

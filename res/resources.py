@@ -46,11 +46,17 @@ class Text(Enum):
 
 class OrderStatus(Enum):
     WAITING = "ожидает реакции"
-    IN_PROCESS = "в работе"
-    DONE = "завершен"
+    IN_PROGRESS = "в работе"
+    ENDED = "завершена"
+    DELAYED = "отложена"
 
 
 class OrderActions(Enum):
     GET_WORK = "Взять в работу🛠",
     DELAY_WORK = "Передать заявку другому специалисту📡",
     END_WORK = "Закрыть в заявку✅"
+
+
+class OrderDatabaseActions(Enum):
+    CLOSE = "close"
+    DELAY = "delay"
