@@ -3,24 +3,29 @@ import logging
 from aiogram import Router
 from aiogram.types import CallbackQuery
 
-from data.db_methods import change_status, find_my_orders
-from res.resources import OrderDatabaseActions
+from data.db_methods import database_close_order
 
 manage_my_orders_router = Router()
 
 
-def order_number():
-    return
+async def close_order(order_id, admin_id):
+    logging.info("close")
+    await database_close_order(order_id, admin_id)
+
+
+async def delay_order(order_id, admin_id):
+    logging.info("delay")
+    await database_delay_order(order_id, admin_id)
+
+
+async def update_order_status(data_order_and_id):
+    if data_order_and_id[0] == "close":
+        await close_order(data_order_and_id[1], data_order_and_id[2])
+    elif data_order_and_id[0] == "delay":
+        await delay_order(data_order_and_id[1], data_order_and_id[2])
 
 
 @manage_my_orders_router.callback_query()
 async def change_order_status(callback: CallbackQuery):
     data_order_and_id = callback.data.split("|")
-    delete_zero_item = data_order_and_id.pop(0)
-    my_orders = await find_my_orders(data_order_and_id[1], data_order_and_id[2])
-    if data_order_and_id[0].__contains__(OrderDatabaseActions.CLOSE.value) and delete_zero_item == my_orders:
-        await change_status(data_order_and_id[1], data_order_and_id[2])
-        logging.info("Заявка закрыта")
-    elif data_order_and_id[0].__contains__(OrderDatabaseActions.DELAY.value):
-        await change_status(data_order_and_id[1], data_order_and_id[2])
-        logging.info("Заявка отложена")
+    await update_order_status(data_order_and_id)
