@@ -39,12 +39,14 @@ def generate_table_output(result):
 
 tuple_data = generate_table_output(data)
 print(tuple_data)"""
+import sqlalchemy
+
 """
 in_str = f"close|{824194214}|{12421412421}"
 if in_str.startswith("close"):
     my_list = in_str.split("|")"""
 
-response = [
+"""response = [
     (10, 26, 18346208, 'Калькулятор сломался, сижу с петуха в деревне', None, 'https://t.me/luciferthelight',
      'https://t.me/i0x3141', '01.02.2024, 10:09', None, None, 'в работе', 1623218378),
     (9, 26, 18628322, 'Мой кампуктер убил вирус, сижу с калькулятора!', None, 'https://t.me/luciferthelight', None,
@@ -70,4 +72,46 @@ response = [
 data = [(18346208, 1623218378),
         (18346208, 1623218378)]
 data = list(data)
-print(data)
+print(data)"""
+from sqlalchemy import create_engine, Integer, Column, String
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+base = declarative_base()
+session = sessionmaker()
+
+
+class Car(base):
+    __tablename__ = "car"
+    id = Column(Integer, primary_key=True)
+    model = Column(String)
+    price = Column(Integer)
+
+
+def connect_to_db():
+    conn = "postgresql://postgres:crjkmrj@localhost:5432/postgres"
+    engine = create_engine(conn)
+    return engine
+
+
+# base.metadata.create_all(bind=connect_to_db())
+def insert_vehicles():
+    with session(autoflush=False, bind=connect_to_db()) as database:
+        tesla = Car(model="Tesla", price=10000)
+        vw = Car(model="vw", price=1000)
+        porshe = Car(model="porshe", price=1000)
+        database.add_all([tesla, vw, porshe])
+        database.commit()
+
+
+def update_vehicles():
+    with session(autoflush=False, bind=connect_to_db()) as database:
+        try:
+            tesla = database.query(Car).filter(Car.id.__eq__(1)).first()
+            if tesla is not None:
+                print(f"{tesla.id} {tesla.model} {tesla.price}")
+
+        except sqlalchemy.exc.SQLAlchemyError as e:
+            print(e)
+
+
+update_vehicles()

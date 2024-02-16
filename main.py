@@ -3,7 +3,9 @@ import logging
 import sys
 
 from aiogram import Bot, Dispatcher
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
+from database.session_middleware import DbSessionMiddleware
 from handlers.admin.admin_district import admin_districts_router
 from handlers.admin.admin_reg_success import admin_reg_success_router
 from handlers.admin.order_status import order_status_router_yes, order_status_router_no
@@ -17,7 +19,7 @@ from handlers.user.user_district import user_district_router
 from handlers.user.user_send_message import user_send_message_router
 from handlers.user.user_success_message import user_success_router
 from handlers.waiting_reaction.waiting_reaction import waiting_reaction_router
-from res.token import bot_token
+from res.secret import bot_token, DatabaseOp as conn_string
 
 
 def get_bot():
@@ -25,8 +27,11 @@ def get_bot():
 
 
 async def main():
+    engine = create_async_engine(url=conn_string.value, echo=True)
+    sessionmaker = async_sessionmaker(engine, expire_on_commit=False)
     bot = Bot(token=bot_token(), parse_mode="HTML")
     dp = Dispatcher()
+    dp.update.middleware(DbSessionMiddleware(session_pool=sessionmaker))
     dp.include_routers(start_router,
                        admin_districts_router,
                        admin_reg_success_router,

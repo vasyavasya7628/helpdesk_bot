@@ -1,11 +1,7 @@
-import asyncio
-import concurrent
-import logging
-
 from aiogram.types import ReplyKeyboardMarkup
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
 
-from data.db_methods import get_orders_waiting
+from database.db_methods import get_orders_waiting
 
 
 def get_list_of_waiting(kb):

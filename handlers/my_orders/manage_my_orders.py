@@ -3,7 +3,7 @@ import logging
 from aiogram import Router
 from aiogram.types import CallbackQuery
 
-from data.db_methods import database_close_order
+from database.db_methods import database_close_order
 
 manage_my_orders_router = Router()
 
@@ -15,7 +15,8 @@ async def close_order(order_id, admin_id):
 
 async def delay_order(order_id, admin_id):
     logging.info("delay")
-    await database_delay_order(order_id, admin_id)
+    # await database_delay_order(order_id, admin_id)
+    pass
 
 
 async def update_order_status(data_order_and_id):

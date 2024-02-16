@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.types import Message
 
 from keyboards.waiting_reaction.kb_waiting_reaction import kb_waiting_reaction
-from data.db_methods import get_orders_waiting
+from database.db_methods import get_orders_waiting
 from res.resources import Text
 
 waiting_reaction_router = Router()

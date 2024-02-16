@@ -1,16 +1,14 @@
 import logging
 import os
 import re
-import sqlite3
-
-import aiosqlite
+import psycopg2
 
 from res.resources import OrderStatus
 
 
 def get_db_path():
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    return os.path.join(current_dir, "districts.db")
+    return os.path.join(current_dir, "../data/districts.db")
 
 
 async def insert_user(district_id, user_id, user_name, user_firstname, user_lastname):
@@ -175,8 +173,8 @@ async def database_close_order(order_id, admin_id):
             logging.info(f"database_close_order {order_id} {admin_id}")
             # database_find_orders = await find_orders(order_id, admin_id)
             await conn.execute(
-                "UPDATE `orders` SET status =\"закрыт\""
-                "WHERE order_number = 1623218378 AND admin_telegram_id = 18346208;")
+                "UPDATE `orders` SET status = 'закрыт' WHERE order_number = 18346208 AND admin_telegram_id = 1623218378;")
+            logging.info("ЗАПРОС UPDATE ВЫПОЛНЕН")
             await conn.commit()
     except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function database_close_order: {error}")
