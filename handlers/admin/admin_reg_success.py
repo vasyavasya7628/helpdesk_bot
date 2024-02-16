@@ -4,7 +4,7 @@ from aiogram.types import Message
 
 from handlers.admin.admin_fsm import AdminFSM
 from keyboards.admin.adm_success_keyboard import get_kb_reg_success
-from data.db_methods import insert_user, delete_admin
+from database.db_methods import insert_user, delete_admin
 from res.resources import Text
 
 admin_reg_success_router = Router()
