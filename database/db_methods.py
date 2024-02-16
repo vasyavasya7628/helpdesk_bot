@@ -1,7 +1,9 @@
 import logging
 import os
 import re
-import psycopg2
+import sqlite3
+
+import aiosqlite
 
 from res.resources import OrderStatus
 
@@ -173,7 +175,8 @@ async def database_close_order(order_id, admin_id):
             logging.info(f"database_close_order {order_id} {admin_id}")
             # database_find_orders = await find_orders(order_id, admin_id)
             await conn.execute(
-                "UPDATE `orders` SET status = 'закрыт' WHERE order_number = 18346208 AND admin_telegram_id = 1623218378;")
+                "UPDATE `orders` SET status = 'закрыт' WHERE order_number = 18346208 AND admin_telegram_id = "
+                "1623218378;")
             logging.info("ЗАПРОС UPDATE ВЫПОЛНЕН")
             await conn.commit()
     except aiosqlite.Error as error:
