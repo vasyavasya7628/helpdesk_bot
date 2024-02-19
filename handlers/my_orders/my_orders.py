@@ -12,7 +12,7 @@ my_orders_router = Router()
 @my_orders_router.message(F.text == Text.MY_ORDERS.value)
 async def show_orders(message: Message, bot: Bot):
     formatted_message = f"Список заявок:\n"
-    order_list = sync_get_order_info(message.from_user.id)
+    order_list = await sync_get_order_info(message.from_user.id)
     for i in range(len(order_list)):
         order_text = (f"Номер заявки: {order_list[i][2]} \n"
                       f"От кого: {order_list[i][5]}\n"

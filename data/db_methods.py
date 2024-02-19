@@ -172,11 +172,42 @@ async def database_close_order(order_id, admin_id):
     admin_id = admin_id
     try:
         async with aiosqlite.connect(get_db_path()) as conn:
-            logging.info(f"database_close_order {order_id} {admin_id}")
-            # database_find_orders = await find_orders(order_id, admin_id)
+            logging.info(f"database_close_order: order_id = {order_id} admin_id = {admin_id}")
             await conn.execute(
-                "UPDATE `orders` SET status =\"закрыт\""
-                "WHERE order_number = 1623218378 AND admin_telegram_id = 18346208;")
+                "UPDATE `orders` SET status =\"закрыта\", admin_telegram_id =\"\" "
+                "WHERE order_number = ? AND admin_telegram_id = ?;",
+                (order_id, admin_id))
+            await conn.commit()
+    except aiosqlite.Error as error:
+        logging.info(f"[ERROR] in function database_close_order: {error}")
+
+
+async def database_delay_order(order_id, admin_id):
+    order_id = order_id
+    admin_id = admin_id
+    try:
+        async with aiosqlite.connect(get_db_path()) as conn:
+            logging.info(f"database_close_order: order_id = {order_id} admin_id = {admin_id}")
+            await conn.execute(
+                "UPDATE `orders` SET status =\"отложена\", admin_telegram_id =\"\" "
+                "WHERE order_number = ? AND admin_telegram_id = ?;",
+                (order_id, admin_id))
+
+            await conn.commit()
+    except aiosqlite.Error as error:
+        logging.info(f"[ERROR] in function database_close_order: {error}")
+
+
+async def database_get_order(order_id, admin_id):
+    order_id = order_id
+    admin_id = admin_id
+    try:
+        async with aiosqlite.connect(get_db_path()) as conn:
+            logging.info(f"database_close_order: order_id = {order_id} admin_id = {admin_id}")
+            await conn.execute(
+                "UPDATE `orders` SET status =\"в работе\", admin_telegram_id=?"
+                "WHERE order_number = ?;",
+                (admin_id, order_id))
             await conn.commit()
     except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function database_close_order: {error}")
@@ -202,17 +233,28 @@ async def clear_db():
         logging.info(f"[ERROR] in function clear_db: {error}")
 
 
-def sync_get_order_info(admin_telegram_id="None"):
+async def sync_get_order_info(admin_telegram_id="None"):
     try:
-        conn = sqlite3.connect(get_db_path())
-        cursor = conn.execute(
-            "SELECT * FROM orders WHERE admin_telegram_id = ? ORDER BY id DESC LIMIT 10;",
-            (admin_telegram_id,))
-        results = cursor.fetchall()
-        logging.info(results)
-        conn.close()
-        return list(results)
-    except sqlite3.Error as error:
+        async with aiosqlite.connect(get_db_path()) as conn:
+            cursor = await conn.execute(
+                "SELECT * FROM orders WHERE admin_telegram_id = ?;",
+                (admin_telegram_id,))
+            results = await cursor.fetchall()
+            logging.info(results)
+            return list(results)
+    except aiosqlite.Error as error:
+        logging.info(f"[ERROR] in function get_order_info: {error}")
+
+
+async def order_info(admin_telegram_id="None"):
+    try:
+        async with aiosqlite.connect(get_db_path()) as conn:
+            cursor = await conn.execute(
+                "SELECT * FROM orders WHERE status = \"ожидает реакции\";")
+            results = await cursor.fetchall()
+            logging.info(results)
+            return list(results)
+    except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function get_order_info: {error}")
 
 
