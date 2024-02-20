@@ -4,6 +4,7 @@ import re
 import sqlite3
 
 import aiosqlite
+from numba import njit, jit
 
 from res.resources import OrderStatus
 
@@ -124,13 +125,24 @@ async def change_order_status(order_number, new_status):
         logging.error(f"[ERROR] in function change_order_status: {error}")
 
 
-async def get_order_info(district_id):
+async def check_role(user_id):
+    try:
+        db_path = get_db_path()
+        async with aiosqlite.connect(db_path) as conn:
+            cursor = await conn.execute("SELECT * FROM `users` WHERE user_id = ? AND role=\"admin\";",
+                                        (user_id,))
+            result = await cursor.fetchone()
+            return bool(result)
+    except aiosqlite.Error as error:
+        logging.error(f"[ERROR] in function check_role: {error}")
+
+
+async def get_order_info():
     try:
         await clear_db()
         async with aiosqlite.connect(get_db_path()) as conn:
             cursor = await conn.execute(
-                "SELECT * FROM orders WHERE district_id = ? ORDER BY id DESC LIMIT 10;",
-                (district_id,))
+                "SELECT * FROM orders ORDER BY id;")
             results = await cursor.fetchall()
             logging.info(results)
         return list(results)
@@ -204,11 +216,16 @@ async def database_get_order(order_id, admin_id):
     try:
         async with aiosqlite.connect(get_db_path()) as conn:
             logging.info(f"database_close_order: order_id = {order_id} admin_id = {admin_id}")
-            await conn.execute(
-                "UPDATE `orders` SET status =\"в работе\", admin_telegram_id=?"
-                "WHERE order_number = ?;",
-                (admin_id, order_id))
-            await conn.commit()
+            cursor = await conn.execute("SELECT 1 FROM `orders` WHERE admin_telegram_id=?;", (admin_id,))
+            id_found = await cursor.fetchone()
+            if id_found:
+                logging.info("Заявку уже забрали")
+            else:
+                await conn.execute(
+                    "UPDATE `orders` SET status =\"в работе\", admin_telegram_id=?"
+                    "WHERE order_number = ?;",
+                    (admin_id, order_id))
+                await conn.commit()
     except aiosqlite.Error as error:
         logging.info(f"[ERROR] in function database_close_order: {error}")
 

@@ -1,7 +1,8 @@
 from aiogram import Router, F, Bot
 from aiogram.types import Message
+from numba import njit
 
-from data.db_methods import sync_get_order_info, order_info
+from data.db_methods import order_info
 from handlers.order_list.show_all_orders import none_check
 from keyboards.waiting_reaction.kb_waiting_reaction import kb_waiting_reaction
 from res.resources import Text
@@ -9,6 +10,7 @@ from res.resources import Text
 waiting_reaction_router = Router()
 
 
+@njit(parallel=True)
 @waiting_reaction_router.message(F.text == Text.ACTIVE_ORDERS.value)
 async def show_waiting_orders(message: Message, bot: Bot):
     formatted_message = f"Список заявок:\n"

@@ -1,3 +1,4 @@
-aiosqlite==0.19.0
-aiogram==3.1.1
+aiosqlite
+aiogram
 sqlite3==3.45.1
+numba
