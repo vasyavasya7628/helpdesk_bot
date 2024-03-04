@@ -2,7 +2,7 @@ from aiogram import Router, F, Bot
 from aiogram.types import Message
 from numba import njit
 
-from data.db_methods import order_info
+from database.db_methods import order_info
 from handlers.order_list.show_all_orders import none_check
 from keyboards.waiting_reaction.kb_waiting_reaction import kb_waiting_reaction
 from res.resources import Text

@@ -2,7 +2,7 @@ from aiogram import Router, F
 from aiogram.filters import Command
 from aiogram.types import Message
 
-from data.db_methods import check_role
+from database.db_methods import check_role
 from keyboards.menu.start_keyboard import get_kb_start
 from res.resources import Text
 

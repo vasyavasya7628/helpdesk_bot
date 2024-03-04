@@ -3,7 +3,7 @@ import logging
 from aiogram import Router, Bot
 from aiogram.types import CallbackQuery
 
-from data.db_methods import database_close_order, database_delay_order, database_get_order
+from database.db_methods import database_close_order, database_delay_order, database_get_order
 
 manage_my_orders_router = Router()
 

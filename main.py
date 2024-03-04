@@ -4,15 +4,13 @@ import sys
 
 from aiogram import Bot, Dispatcher
 
-from data.status_manager import manage_my_orders_router
+from database.status_manager import manage_my_orders_router
 from handlers.admin.admin_district import admin_districts_router
 from handlers.admin.admin_reg_success import admin_reg_success_router
 from handlers.admin.order_status import order_status_router_yes, order_status_router_no
 from handlers.menu.exceptions_catcher import exceptions_router
 from handlers.menu.start import start_router
-from handlers.my_orders.manage_my_orders import manage_my_orders_router
 from handlers.my_orders.my_orders import my_orders_router
-from handlers.order_list.menu_districts import menu_district_router
 from handlers.order_list.show_all_orders import order_info_router
 from handlers.user.check_window import window_router
 from handlers.user.success_message import user_success_router

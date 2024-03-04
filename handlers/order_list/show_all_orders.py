@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message
 
-from data.db_methods import get_order_info
+from database.db_methods import get_order_info
 from keyboards.orders.menu_district_keyboard import kb_menu_districts
 from res.resources import Text
 

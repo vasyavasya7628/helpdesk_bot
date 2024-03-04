@@ -2,7 +2,7 @@ from aiogram import F, Router, Bot
 from aiogram.fsm.context import FSMContext
 from aiogram.types import Message
 
-from data.db_methods import sync_get_order_info
+from database.db_methods import sync_get_order_info
 from handlers.order_list.show_all_orders import none_check
 from keyboards.my_orders.kb_my_orders import kb_my_orders
 from res.resources import Text
