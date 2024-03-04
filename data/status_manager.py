@@ -1,6 +1,6 @@
 import logging
 
-from aiogram import Router
+from aiogram import Router, Bot
 from aiogram.types import CallbackQuery
 
 from data.db_methods import database_close_order, database_delay_order, database_get_order
@@ -20,7 +20,7 @@ async def delay_order(order_id, admin_id):
 
 async def get_order(order_id, admin_id):
     logging.info("get_order")
-    await database_get_order(order_id, admin_id)
+    return await database_get_order(order_id, admin_id)
 
 
 async def update_order_status(data_order_and_id):
@@ -29,10 +29,12 @@ async def update_order_status(data_order_and_id):
     elif data_order_and_id[0] == "delay":
         await delay_order(data_order_and_id[2], data_order_and_id[1])
     elif data_order_and_id[0] == "get_order":
-        await get_order(data_order_and_id[2], data_order_and_id[1])
+        return await get_order(data_order_and_id[2], data_order_and_id[1])
 
 
 @manage_my_orders_router.callback_query()
-async def change_order_status(callback: CallbackQuery):
+async def change_order_status(callback: CallbackQuery, bot: Bot):
     data_order_and_id = callback.data.split("|")
-    await update_order_status(data_order_and_id)
+    value = await update_order_status(data_order_and_id)
+    if value is False:
+        await bot.answer_callback_query(callback.id, "Заявку забрали", show_alert=True)

@@ -3,7 +3,6 @@ import logging
 import sys
 
 from aiogram import Bot, Dispatcher
-from numba import jit
 
 from data.status_manager import manage_my_orders_router
 from handlers.admin.admin_district import admin_districts_router
@@ -13,8 +12,8 @@ from handlers.menu.exceptions_catcher import exceptions_router
 from handlers.menu.start import start_router
 from handlers.my_orders.my_orders import my_orders_router
 from handlers.order_list.show_all_orders import order_info_router
-from handlers.user.user_send_message import user_send_message_router
-from handlers.user.user_success_message import user_success_router
+from handlers.user.check_window import window_router
+from handlers.user.success_message import user_success_router
 from handlers.waiting_reaction.waiting_reaction import waiting_reaction_router
 from res.token import bot_token
 
@@ -33,7 +32,7 @@ async def main():
                        order_status_router_no,
                        manage_my_orders_router,
                        waiting_reaction_router,
-                       user_send_message_router,
+                       window_router,
                        my_orders_router,
                        user_success_router,
                        order_info_router,

@@ -4,7 +4,6 @@ import re
 import sqlite3
 
 import aiosqlite
-from numba import njit, jit
 
 from res.resources import OrderStatus
 
@@ -31,7 +30,7 @@ async def insert_user(district_id, user_id, user_name, user_firstname, user_last
 async def select_user_id(district_id):
     try:
         async with aiosqlite.connect(get_db_path()) as conn:
-            cursor = await conn.execute("SELECT user_id FROM users WHERE district_id = ?", (district_id,))
+            cursor = await conn.execute("SELECT user_id FROM users;")
             data = await cursor.fetchall()
             return [row[0] for row in data]
     except aiosqlite.Error as error:
@@ -45,7 +44,7 @@ async def select_admins_same_district(admin_id):
             current_admin_district = await cursor.fetchone()
 
             if current_admin_district:
-                current_district_id = current_admin_district[0]
+                current_district_id = None
                 cursor = await conn.execute("SELECT user_id FROM users WHERE district_id = ?", (current_district_id,))
                 return [row[0] for row in await cursor.fetchall()]
         return []
@@ -62,13 +61,23 @@ async def delete_admin(admin_id):
         logging.info(f"[ERROR] in function delete_admin: {error}")
 
 
-async def add_order_info(district_id, order_number, order_description, from_user, data_time):
+async def get_admins():
     try:
         async with aiosqlite.connect(get_db_path()) as conn:
-            await conn.execute('''INSERT INTO orders (district_id, user_problem_description, from_user, order_number,
-            date_create, status) VALUES (?, ?, ?, ?, ?, ?)''',
+            cursor = await conn.execute("SELECT user_id FROM users;")
+            data = await cursor.fetchall()
+            return [item[0] for item in data]
+    except aiosqlite.Error as error:
+        logging.info(f"[ERROR] in function add_order_info: {error}")
+
+
+async def add_order_info(order_number, order_description, from_user, data_time):
+    try:
+        async with aiosqlite.connect(get_db_path()) as conn:
+            await conn.execute('''INSERT INTO orders (user_problem_description, from_user, order_number,
+            date_create, status) VALUES (?, ?, ?, ?, ?)''',
                                (
-                                   district_id, order_description, from_user, order_number, data_time,
+                                   order_description, from_user, order_number, data_time,
                                    OrderStatus.WAITING.value))
             await conn.commit()
     except aiosqlite.Error as error:
@@ -216,10 +225,13 @@ async def database_get_order(order_id, admin_id):
     try:
         async with aiosqlite.connect(get_db_path()) as conn:
             logging.info(f"database_close_order: order_id = {order_id} admin_id = {admin_id}")
-            cursor = await conn.execute("SELECT 1 FROM `orders` WHERE admin_telegram_id=?;", (admin_id,))
+            cursor = await conn.execute("SELECT 1 FROM `orders` WHERE status != \"в работе\" and order_number=?;",
+                                        (order_id,))
             id_found = await cursor.fetchone()
-            if id_found:
+            logging.info(f"ПОЧЕМУ НЕ МОГУ ВЗЯТЬ ЗАЯВКУ {id_found}")
+            if id_found is None:
                 logging.info("Заявку уже забрали")
+                return False
             else:
                 await conn.execute(
                     "UPDATE `orders` SET status =\"в работе\", admin_telegram_id=?"
@@ -267,7 +279,7 @@ async def order_info(admin_telegram_id="None"):
     try:
         async with aiosqlite.connect(get_db_path()) as conn:
             cursor = await conn.execute(
-                "SELECT * FROM orders WHERE status = \"ожидает реакции\";")
+                "SELECT * FROM orders WHERE status !=\"закрыта\" and status !=\"в работе\";")
             results = await cursor.fetchall()
             logging.info(results)
             return list(results)
