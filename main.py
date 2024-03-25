@@ -1,8 +1,9 @@
 import asyncio
 import logging
+import os
 import sys
-
 from aiogram import Bot, Dispatcher
+from dotenv import load_dotenv
 
 from database.status_manager import manage_my_orders_router
 from handlers.admin.admin_district import admin_districts_router
@@ -15,7 +16,6 @@ from handlers.order_list.show_all_orders import order_info_router
 from handlers.user.check_window import window_router
 from handlers.user.success_message import user_success_router
 from handlers.waiting_reaction.waiting_reaction import waiting_reaction_router
-from res.token import bot_token
 
 
 def get_bot():
@@ -23,7 +23,7 @@ def get_bot():
 
 
 async def main():
-    bot = Bot(token=bot_token(), parse_mode="HTML")
+    bot = Bot(token=os.getenv('BOT_TOKEN'), parse_mode="HTML")
     dp = Dispatcher()
     dp.include_routers(start_router,
                        admin_districts_router,
